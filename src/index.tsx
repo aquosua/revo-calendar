@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 
-import helperFunctions from "./helpers/functions";
-import translations from "./helpers/translations";
+import helperFunctions from './helpers/functions';
+import translations from './helpers/translations';
 
-import { Props } from "./typings";
+import { Props } from './typings';
 
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from 'styled-components';
 import {
   Calendar,
   CloseDetail,
@@ -17,7 +17,7 @@ import {
   Inner,
   MonthButton,
   Sidebar,
-} from "./styles";
+} from './styles';
 
 // -1 = ANIMATE CLOSING | 0 = NOTHING | 1 = ANIMATE OPENING.
 let animatingSidebar = 0;
@@ -25,15 +25,15 @@ let animatingDetail = 0;
 
 const RevoCalendar = ({
   style = {},
-  className = "",
+  className = '',
   events = [],
   highlightToday = true,
-  lang = "en",
-  primaryColor = "#4F6995",
-  secondaryColor = "#c4dce9",
-  todayColor = "#3B3966",
-  textColor = "#333333",
-  indicatorColor = "orange",
+  lang = 'en',
+  primaryColor = '#4F6995',
+  secondaryColor = '#c4dce9',
+  todayColor = '#3B3966',
+  textColor = '#333333',
+  indicatorColor = 'orange',
   animationSpeed = 300,
   sidebarWidth = 180,
   detailWidth = 280,
@@ -47,9 +47,12 @@ const RevoCalendar = ({
   openDetailsOnDateSelection = true,
   timeFormat24 = true,
   showAllDayLabel = false,
-  detailDateFormat = "DD/MM/YYYY",
+  detailDateFormat = 'DD/MM/YYYY',
   languages = translations,
   date = new Date(),
+  eventDetailsBorderRadius,
+  eventDetailsTextDisplay,
+  eventDetails = false,
   dateSelected = () => {},
   eventSelected = () => {},
   addEvent = () => {},
@@ -73,9 +76,9 @@ const RevoCalendar = ({
           setSize(calendarRef.current.offsetWidth);
         }
       }
-      window.addEventListener("resize", updateSize);
+      window.addEventListener('resize', updateSize);
       updateSize();
-      return () => window.removeEventListener("resize", updateSize);
+      return () => window.removeEventListener('resize', updateSize);
     }, [calendarRef.current]);
     return size;
   }
@@ -101,7 +104,7 @@ const RevoCalendar = ({
 
   // USE TODAY AS DEFAULT SELECTED DATE IF PASSED DATE IS INVALID.
   if (!helperFunctions.isValidDate(date)) {
-    console.log("The passed date prop is invalid");
+    console.log('The passed date prop is invalid');
     date = new Date();
   }
 
@@ -507,6 +510,9 @@ const RevoCalendar = ({
         animationSpeed: `${animationSpeed}ms`,
         sidebarWidth: `${sidebarWidth}px`,
         detailWidth: `${detailWidth}px`,
+        eventDetailsBorderRadius,
+        eventDetailsTextDisplay,
+        eventDetails,
       }}
     >
       <Calendar className={className} ref={calendarRef} style={style}>

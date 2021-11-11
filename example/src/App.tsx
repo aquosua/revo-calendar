@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import "./App.css";
-import { ChromePicker } from "react-color";
-import GitHubButton from "react-github-btn";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { useState, useEffect } from 'react';
+import './App.css';
+import { ChromePicker } from 'react-color';
+import GitHubButton from 'react-github-btn';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import RevoCalendar from "revo-calendar";
+import RevoCalendar from 'revo-calendar';
 
 const personIcon =
-  "M20.822 18.096c-3.439-.794-6.64-1.49-5.09-4.418 4.72-8.912 1.251-13.678-3.732-13.678-5.082 0-8.464 4.949-3.732 13.678 1.597 2.945-1.725 3.641-5.09 4.418-3.073.71-3.188 2.236-3.178 4.904l.004 1h23.99l.004-.969c.012-2.688-.092-4.222-3.176-4.935z";
+  'M20.822 18.096c-3.439-.794-6.64-1.49-5.09-4.418 4.72-8.912 1.251-13.678-3.732-13.678-5.082 0-8.464 4.949-3.732 13.678 1.597 2.945-1.725 3.641-5.09 4.418-3.073.71-3.188 2.236-3.178 4.904l.004 1h23.99l.004-.969c.012-2.688-.092-4.222-3.176-4.935z';
 
 const thermometerIcon =
-  "M12 9.312l-1.762.491 1.562.881-.491.871-1.562-.881.491 1.762-.963.268-.76-2.724-2.015-1.126v1.939l2 2-.707.707-1.293-1.293v1.793h-1v-1.793l-1.293 1.293-.707-.707 2-2v-1.939l-2.015 1.126-.761 2.724-.963-.268.491-1.762-1.562.882-.491-.871 1.562-.881-1.761-.492.269-.962 2.725.76 1.982-1.11-1.983-1.109-2.724.759-.269-.962 1.762-.491-1.563-.882.491-.871 1.562.881-.49-1.762.963-.269.76 2.725 2.015 1.128v-1.94l-2-2 .707-.707 1.293 1.293v-1.793h1v1.793l1.293-1.293.707.707-2 2v1.94l2.016-1.127.76-2.725.963.269-.492 1.761 1.562-.881.491.871-1.562.881 1.762.492-.269.962-2.725-.76-1.982 1.11 1.982 1.109 2.725-.76.269.963zm4-5.812v7.525c0 1.57-.514 2.288-1.41 3.049-1.011.859-1.59 2.107-1.59 3.426 0 2.481 2.019 4.5 4.5 4.5s4.5-2.019 4.5-4.5c0-1.319-.579-2.567-1.589-3.426-.897-.762-1.411-1.48-1.411-3.049v-7.525c0-.827-.673-1.5-1.5-1.5s-1.5.673-1.5 1.5zm5 0v7.525c0 .587.258 1.145.705 1.525 1.403 1.192 2.295 2.966 2.295 4.95 0 3.59-2.909 6.5-6.5 6.5s-6.5-2.91-6.5-6.5c0-1.984.892-3.758 2.295-4.949.447-.381.705-.94.705-1.526v-7.525c0-1.934 1.567-3.5 3.5-3.5s3.5 1.566 3.5 3.5zm0 14c0 1.934-1.567 3.5-3.5 3.5s-3.5-1.566-3.5-3.5c0-1.141.599-2.084 1.393-2.781 1.01-.889 1.607-1.737 1.607-3.221v-.498h1v.498c0 1.486.595 2.33 1.607 3.221.794.697 1.393 1.64 1.393 2.781z";
+  'M12 9.312l-1.762.491 1.562.881-.491.871-1.562-.881.491 1.762-.963.268-.76-2.724-2.015-1.126v1.939l2 2-.707.707-1.293-1.293v1.793h-1v-1.793l-1.293 1.293-.707-.707 2-2v-1.939l-2.015 1.126-.761 2.724-.963-.268.491-1.762-1.562.882-.491-.871 1.562-.881-1.761-.492.269-.962 2.725.76 1.982-1.11-1.983-1.109-2.724.759-.269-.962 1.762-.491-1.563-.882.491-.871 1.562.881-.49-1.762.963-.269.76 2.725 2.015 1.128v-1.94l-2-2 .707-.707 1.293 1.293v-1.793h1v1.793l1.293-1.293.707.707-2 2v1.94l2.016-1.127.76-2.725.963.269-.492 1.761 1.562-.881.491.871-1.562.881 1.762.492-.269.962-2.725-.76-1.982 1.11 1.982 1.109 2.725-.76.269.963zm4-5.812v7.525c0 1.57-.514 2.288-1.41 3.049-1.011.859-1.59 2.107-1.59 3.426 0 2.481 2.019 4.5 4.5 4.5s4.5-2.019 4.5-4.5c0-1.319-.579-2.567-1.589-3.426-.897-.762-1.411-1.48-1.411-3.049v-7.525c0-.827-.673-1.5-1.5-1.5s-1.5.673-1.5 1.5zm5 0v7.525c0 .587.258 1.145.705 1.525 1.403 1.192 2.295 2.966 2.295 4.95 0 3.59-2.909 6.5-6.5 6.5s-6.5-2.91-6.5-6.5c0-1.984.892-3.758 2.295-4.949.447-.381.705-.94.705-1.526v-7.525c0-1.934 1.567-3.5 3.5-3.5s3.5 1.566 3.5 3.5zm0 14c0 1.934-1.567 3.5-3.5 3.5s-3.5-1.566-3.5-3.5c0-1.141.599-2.084 1.393-2.781 1.01-.889 1.607-1.737 1.607-3.221v-.498h1v.498c0 1.486.595 2.33 1.607 3.221.794.697 1.393 1.64 1.393 2.781z';
 
 function App() {
   var reso1 = new Date();
@@ -43,63 +43,63 @@ function App() {
 
   const [eventList, setEvents] = useState([
     {
-      name: "Homer Simpson",
+      name: 'Homer Simpson',
       date: +reso1,
       allDay: false,
       extra: {
         icon: personIcon,
-        text: "party of 5",
+        text: 'party of 5',
       },
     },
     {
-      name: "Han Solo",
+      name: 'Han Solo',
       date: +reso2,
       allDay: false,
       extra: {
         icon: personIcon,
-        text: "party of 2",
+        text: 'party of 2',
       },
     },
     {
-      name: "Gandalf, the Grey",
+      name: 'Gandalf, the Grey',
       date: +reso3,
       allDay: false,
       extra: {
         icon: personIcon,
-        text: "party of 9",
+        text: 'party of 9',
       },
     },
     {
-      name: "Britta Perry",
+      name: 'Britta Perry',
       date: +reso4,
       allDay: false,
       extra: {
         icon: personIcon,
-        text: "party of 7",
+        text: 'party of 7',
       },
     },
     {
-      name: "Lunch with Michael",
+      name: 'Lunch with Michael',
       date: +lunchWithKevin,
       allDay: false,
     },
     {
-      name: "Meeting with Vito",
+      name: 'Meeting with Vito',
       date: +meetingWithVito,
       allDay: false,
     },
     {
-      name: "Dinner with Fredo",
+      name: 'Dinner with Fredo',
       date: +dinnerWithFredo,
       allDay: false,
     },
     {
-      name: "Day after Tomorrow",
+      name: 'Day after Tomorrow',
       date: +dayAfterTomorrow,
       allDay: true,
       extra: {
         icon: thermometerIcon,
-        text: "-30º C",
+        text: '-30º C',
       },
     },
   ]);
@@ -108,12 +108,12 @@ function App() {
   const [showAddEventModal, setShowAddEventModal] = useState(false);
 
   const [highlightToday, setHighlightToday] = useState(true);
-  const [lang, setLang] = useState("en");
-  const [primaryColor, setPrimaryColor] = useState("#4F6995");
-  const [secondaryColor, setSecondaryColor] = useState("#D7E6EE");
-  const [todayColor, setTodayColor] = useState("#3B3966");
-  const [textColor, setTextColor] = useState("#333333");
-  const [indicatorColor, setIndicatorColor] = useState("orange");
+  const [lang, setLang] = useState('en');
+  const [primaryColor, setPrimaryColor] = useState('#4F6995');
+  const [secondaryColor, setSecondaryColor] = useState('#D7E6EE');
+  const [todayColor, setTodayColor] = useState('#3B3966');
+  const [textColor, setTextColor] = useState('#333333');
+  const [indicatorColor, setIndicatorColor] = useState('orange');
   const [animationSpeed, setAnimationSpeed] = useState(300);
   const [sidebarWidth, setSidebarWidth] = useState(180);
   const [detailWidth, setDetailWidth] = useState(280);
@@ -126,13 +126,13 @@ function App() {
     useState(true);
   const [timeFormat24, setTimeFormat24] = useState(true);
   const [showAllDayLabel, setShowAllDayLabel] = useState(false);
-  const [detailDateFormat, setDetailDateFormat] = useState("DD/MM/YYYY");
+  const [detailDateFormat, setDetailDateFormat] = useState('DD/MM/YYYY');
 
-  const [newEventName, setNewEventName] = useState("");
+  const [newEventName, setNewEventName] = useState('');
   const [newEventDate, setNewEventDate] = useState(new Date());
   const [newEventAllDay, setNewEventAllDay] = useState(false);
-  const [newEventIcon, setNewEventIcon] = useState("");
-  const [newEventText, setNewEventText] = useState("");
+  const [newEventIcon, setNewEventIcon] = useState('');
+  const [newEventText, setNewEventText] = useState('');
 
   function deleteEvent(i: number) {
     var temp = eventList;
@@ -178,24 +178,24 @@ function App() {
 
     console.log(
       `%cfunction %cdeleteEvent %c() {\n`,
-      "color: #f777c9",
-      "color: #67fd6e",
-      "color: #D7D7D7",
+      'color: #f777c9',
+      'color: #67fd6e',
+      'color: #D7D7D7',
       deleteEventFunction,
       `\n}`
     );
     console.log(
       `%cfunction %caddEvent %c() {\n`,
-      "color: #f777c9",
-      "color: #67fd6e",
-      "color: #D7D7D7",
+      'color: #f777c9',
+      'color: #67fd6e',
+      'color: #D7D7D7',
       addEventFunction,
       `\n}`
     );
   }, []);
 
   useEffect(() => {
-    console.log("%cEventList: ", "color: #b788f4", eventList);
+    console.log('%cEventList: ', 'color: #b788f4', eventList);
   }, [eventList]);
 
   return (
@@ -267,7 +267,7 @@ function App() {
           <RevoCalendar
             events={eventList}
             style={{
-              borderRadius: "5px",
+              borderRadius: '5px',
               border: `5px solid ${primaryColor}`,
             }}
             date={new Date()}
@@ -295,6 +295,9 @@ function App() {
               setNewEventDate(date);
               setShowAddEventModal(true);
             }}
+            eventDetailsBorderRadius={0}
+            eventDetailsTextDisplay={'block'}
+            eventDetails={true}
           />
         </div>
         {showAddEventModal && (
@@ -303,7 +306,7 @@ function App() {
             <div className="options">
               <code>
                 <pre>
-                  <span className="codePink">var </span>newEvent = {"{"}
+                  <span className="codePink">var </span>newEvent = {'{'}
                 </pre>
                 <pre className="tab">
                   name<label className="codePink">:</label> "
@@ -327,14 +330,14 @@ function App() {
                   />
                   <label className="timeDisplay" htmlFor="datePicker">{`${
                     newEventDate.getHours() <= 9
-                      ? "0" + newEventDate.getHours()
+                      ? '0' + newEventDate.getHours()
                       : newEventDate.getHours()
                   }:${
                     newEventDate.getMinutes() <= 9
-                      ? "0" + newEventDate.getMinutes()
+                      ? '0' + newEventDate.getMinutes()
                       : newEventDate.getMinutes()
                   }`}</label>
-                  , <span className="comment">{"/* DD/MM/YYYY */"}</span>
+                  , <span className="comment">{'/* DD/MM/YYYY */'}</span>
                 </pre>
                 <pre className="tab">
                   allDay<label className="codePink">:</label>
@@ -346,7 +349,7 @@ function App() {
                   ,
                 </pre>
                 <pre className="tab">
-                  extra<label className="codePink">:</label> {"{"}
+                  extra<label className="codePink">:</label> {'{'}
                 </pre>
                 <pre className="tab2">
                   icon<label className="codePink">:</label>"
@@ -366,11 +369,11 @@ function App() {
                   />
                   "
                 </pre>
-                <pre>{"}"}</pre>
+                <pre>{'}'}</pre>
                 <div className="addEvent">
                   <button
                     className="colorPickerBtn"
-                    disabled={newEventName === ""}
+                    disabled={newEventName === ''}
                     onClick={addEvent}
                   >
                     addEvent()
@@ -381,16 +384,16 @@ function App() {
             <div onClick={() => setShowAddEventModal(false)} />
           </div>
         )}
-        <p style={{ marginTop: "3rem" }}>
+        <p style={{ marginTop: '3rem' }}>
           Before you start playing, please note that you won't be able to modify
-          the <span>date</span>, <span>languages</span>, <span>style</span>,{" "}
-          <span>className</span>, <span>addEvent</span>,{" "}
-          <span>deleteEvent</span>, <span>detailDefault</span>,{" "}
-          <span>sidebarDefault</span>,<span>dateSelected</span> and{" "}
+          the <span>date</span>, <span>languages</span>, <span>style</span>,{' '}
+          <span>className</span>, <span>addEvent</span>,{' '}
+          <span>deleteEvent</span>, <span>detailDefault</span>,{' '}
+          <span>sidebarDefault</span>,<span>dateSelected</span> and{' '}
           <span>eventSelected</span> props in this demo.
         </p>
         <p>
-          For detailed explanations on all available props, check the{" "}
+          For detailed explanations on all available props, check the{' '}
           <a
             href="https://github.com/gjmolter/revo-calendar"
             target="_blank"
@@ -435,7 +438,7 @@ function App() {
               }
               className="colorPickerBtn"
             >
-              {displayColorPicker === 1 ? "Close" : "Pick Color"}
+              {displayColorPicker === 1 ? 'Close' : 'Pick Color'}
             </button>
             {displayColorPicker === 1 && (
               <div className="pickerContainer">
@@ -455,7 +458,7 @@ function App() {
               }
               className="colorPickerBtn"
             >
-              {displayColorPicker === 2 ? "Close" : "Pick Color"}
+              {displayColorPicker === 2 ? 'Close' : 'Pick Color'}
             </button>
             {displayColorPicker === 2 && (
               <div className="pickerContainer">
@@ -475,7 +478,7 @@ function App() {
               }
               className="colorPickerBtn"
             >
-              {displayColorPicker === 3 ? "Close" : "Pick Color"}
+              {displayColorPicker === 3 ? 'Close' : 'Pick Color'}
             </button>
             {displayColorPicker === 3 && (
               <div className="pickerContainer">
@@ -495,7 +498,7 @@ function App() {
               }
               className="colorPickerBtn"
             >
-              {displayColorPicker === 4 ? "Close" : "Pick Color"}
+              {displayColorPicker === 4 ? 'Close' : 'Pick Color'}
             </button>
             {displayColorPicker === 4 && (
               <div className="pickerContainer">
@@ -515,7 +518,7 @@ function App() {
               }
               className="colorPickerBtn"
             >
-              {displayColorPicker === 5 ? "Close" : "Pick Color"}
+              {displayColorPicker === 5 ? 'Close' : 'Pick Color'}
             </button>
             {displayColorPicker === 5 && (
               <div className="pickerContainer">
@@ -535,7 +538,7 @@ function App() {
               onChange={(e) => setAnimationSpeed(parseInt(e.target.value))}
               value={animationSpeed}
             />
-            <span style={{ marginLeft: "10px" }}>ms</span>
+            <span style={{ marginLeft: '10px' }}>ms</span>
           </div>
           <div>
             <label htmlFor="sidebarWidth">sidebarWidth: </label>
@@ -545,7 +548,7 @@ function App() {
               onChange={(e) => setSidebarWidth(parseInt(e.target.value))}
               value={sidebarWidth}
             />
-            <span style={{ marginLeft: "10px" }}>px</span>
+            <span style={{ marginLeft: '10px' }}>px</span>
           </div>
           <div>
             <label htmlFor="detailWidth">detailWidth: </label>
@@ -555,7 +558,7 @@ function App() {
               onChange={(e) => setDetailWidth(parseInt(e.target.value))}
               value={detailWidth}
             />
-            <span style={{ marginLeft: "10px" }}>px</span>
+            <span style={{ marginLeft: '10px' }}>px</span>
           </div>
           <div>
             <label htmlFor="showDetailToggler">showDetailToggler: </label>
@@ -614,7 +617,7 @@ function App() {
           </div>
           <div>
             <label htmlFor="openDetailsOnDateSelection">
-              openDetailsOnDateSelection:{" "}
+              openDetailsOnDateSelection:{' '}
             </label>
             <input
               type="checkbox"
@@ -666,18 +669,18 @@ function App() {
         <div className="code">
           <code>
             <pre>
-              {"<"}
+              {'<'}
               <span className="codeBlue">RevoCalendar</span>
             </pre>
             <pre className="tab">
               <span className="codeGreen">events</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">eventList</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">style</span>
-              {"={{"}
+              {'={{'}
             </pre>
             <pre className="tab2">
               borderRadius:
@@ -687,12 +690,12 @@ function App() {
               border:
               <span className="codeYellow">"5px solid #4F6995"</span>
             </pre>
-            <pre className="tab">{"}}"}</pre>
+            <pre className="tab">{'}}'}</pre>
             <pre className="tab">
               <span className="codeGreen">highlightToday</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{highlightToday.toString()}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">lang</span>=
@@ -720,73 +723,73 @@ function App() {
             </pre>
             <pre className="tab">
               <span className="codeGreen">animationSpeed</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{animationSpeed}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">sidebarWidth</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{sidebarWidth}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">detailWidth</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{detailWidth}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">showDetailToggler</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{showDetailToggler.toString()}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">showSidebarToggler</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">
                 {showSidebarToggler.toString()}
               </span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">onePanelAtATime</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{onePanelAtATime.toString()}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">allowDeleteEvent</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{allowDeleteEvent.toString()}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">allowAddEvent</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{allowAddEvent.toString()}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">openDetailsOnDateSelection</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">
                 {openDetailsOnDateSelection.toString()}
               </span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">timeFormat24</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{timeFormat24.toString()}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">showAllDayLabel</span>
-              {"={"}
+              {'={'}
               <span className="codePurple">{showAllDayLabel.toString()}</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">detailDateFormat</span>=
@@ -794,23 +797,23 @@ function App() {
             </pre>
             <pre className="tab">
               <span className="codeGreen">deleteEvent</span>
-              {"={"}
+              {'={'}
               <span className="codeGreen">deleteEvent</span>
-              {"}"}
+              {'}'}
             </pre>
             <pre className="tab">
               <span className="codeGreen">addEvent</span>
-              {"={"}
+              {'={'}
               <span className="codeGreen">addEvent</span>
-              {"}"}
+              {'}'}
             </pre>
-            <pre>{"/>"}</pre>
+            <pre>{'/>'}</pre>
           </code>
         </div>
         <p>
-          If you're curious on what{" "}
-          <span className="codeGreen">deleteEvent</span> or{" "}
-          <span className="codeGreen">addEvent</span> functions do or what the{" "}
+          If you're curious on what{' '}
+          <span className="codeGreen">deleteEvent</span> or{' '}
+          <span className="codeGreen">addEvent</span> functions do or what the{' '}
           <span className="codePurple">eventList</span> variable looks like,
           check the DevTools Console!
         </p>
@@ -834,7 +837,7 @@ function App() {
           </a>
         </div>
         <p>
-          Also, feel free to contribute with this project on{" "}
+          Also, feel free to contribute with this project on{' '}
           <a
             href="https://github.com/gjmolter/revo-calendar"
             target="_blank"

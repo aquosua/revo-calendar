@@ -1,7 +1,7 @@
 interface SvgrComponent
   extends React.StatelessComponent<React.SVGAttributes<SVGElement>> {}
 
-declare module "*.svg" {
+declare module '*.svg' {
   const svgUrl: string;
   const svgComponent: SvgrComponent;
   export default svgUrl;
@@ -49,6 +49,9 @@ export interface Props {
   eventSelected?(index: number): void;
   addEvent?(date: Date): void;
   deleteEvent?(index: number): void;
+  eventDetailsBorderRadius?: number;
+  eventDetailsTextDisplay?: string;
+  eventDetails?: boolean;
 }
 
 //Styled Component Props
